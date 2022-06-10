@@ -3,17 +3,18 @@ import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import color from '../misc/color';
 
-const Songitem = () => {
+const thethumbnailletter = (songname) => songname[0]
+const Songitem = ({ title, duration }) => {
     return (
         <>
             <View style={styles.container}>
                 <View style={styles.leftcontainer}>
                     <View style={styles.thumbnail}>
-                        <Text style={styles.thumbnailtext}>Q</Text>
+                        <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
                     </View>
                     <View style={StyleSheet.titlecontainer}>
-                        <Text numberOfLines={1} style={styles.title}>Song Name</Text>
-                        <Text numberOfLines={1} style={styles.duration}>2.54</Text>
+                        <Text numberOfLines={1} style={styles.title}>{title}</Text>
+                        <Text numberOfLines={1} style={styles.duration}>{duration}</Text>
                     </View>
                 </View>
                 <View style={styles.rightcontainer}>
@@ -31,7 +32,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
         width: width,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
         //backgroundColor: 'blue',
     },
     leftcontainer: {
@@ -78,7 +80,8 @@ const styles = StyleSheet.create({
         opacity: 0.3,
         height: 0.5,
         alignSelf: 'center',
-        marginTop: 10,
+        marginTop: 5,
+        marginBottom: 5,
     },
 })
 

@@ -7,7 +7,7 @@ import Songitem from './app/components/songitem';
 import { SafeAreaView } from 'react-native-web';
 
 export default function App() {
-  /*
+
   return (
     <AudioFiles>
       <NavigationContainer>
@@ -19,15 +19,16 @@ export default function App() {
       <Text>SATHYA PRAKASH RAI S</Text>
       <StatusBar style="auto" />
     </View>
-    *//*
-);
-*/
-  return (
-    <View style={styles.holder}>
-      <Songitem />
-
-    </View>
+    */
   );
+  /*
+    return (
+      <View style={styles.holder}>
+        <Songitem />
+  
+      </View>
+    );
+    */
 }
 
 const styles = StyleSheet.create({

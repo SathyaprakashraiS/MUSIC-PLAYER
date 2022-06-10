@@ -5,12 +5,14 @@ import { AudioContext } from '../content/audiofiles';
 import { LayoutProvider, RecyclerListView } from 'recyclerlistview';
 import { Dimensions, LayoutAnimation } from 'react-native-web';
 import * as MediaLibrary from 'expo-media-library';
+import Songitem from '../components/songitem';
+import Screen from '../components/screen';
 
 export class Songs extends Component {
   static contextType = AudioContext;
   layoutProvider = new LayoutProvider(i => MediaLibrary.MediaType.audio, (type, dim) => {
     switch (type) {
-      case MediaLibrary.MediaType.audio:
+      case (MediaLibrary.MediaType.audio):
         dim.width = Dimensions.get('window').width;
         dim.height = 70;
       default:
@@ -21,7 +23,8 @@ export class Songs extends Component {
   rowRenderer = (type, item) => {
     //console.log(item)
     console.log(item.filename)
-    return <Text>{item.filename}</Text>
+    //return <Text>{item.filename}</Text>
+    return <Songitem title={item.filename} duration={item.duration} />
   };
   render() {
     /*
@@ -39,7 +42,12 @@ export class Songs extends Component {
 
     return (
       <ScrollView>
-        {this.context.audioFiles.map(item => <Text key={item.id}>{item.filename}</Text>)}
+        <Screen>
+          {this.context.audioFiles.map(item =>
+            //<Text key={item.id}>{item.filename}</Text>
+            <Songitem title={item.filename} duration={item.duration} />
+          )}
+        </Screen>
       </ScrollView>
     );
 
