@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+//import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { View, StyleSheet, Modal, StatusBar, Text, TouchableWithoutFeedback } from 'react-native';
 import color from "../misc/color";
@@ -7,7 +7,7 @@ const OptionCard = ({ visible, selectedsong, onClose, onPlaypress, onAddtopress 
     const { songname } = selectedsong;
     return (
         <>
-            <StatusBarhidden />
+            <StatusBar hidden />
             <Modal animationType='slide' transparent={true} visible={visible}>
                 <View style={styles.card}>
                     <Text style={styles.trackname} numberOfLines={1}>{songname}</Text>
