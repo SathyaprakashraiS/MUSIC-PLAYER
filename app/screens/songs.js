@@ -7,9 +7,18 @@ import { Dimensions, LayoutAnimation } from 'react-native-web';
 import * as MediaLibrary from 'expo-media-library';
 import Songitem from '../components/songitem';
 import Screen from '../components/screen';
+import OptionCard from '../components/optioncard';
 
 export class Songs extends Component {
   static contextType = AudioContext;
+  constructor(props) {
+    super(props);
+    this.state = {
+      optioncardvisibility: false
+    }
+    this.song = {}
+  }
+
   layoutProvider = new LayoutProvider(i => MediaLibrary.MediaType.audio, (type, dim) => {
     switch (type) {
       case (MediaLibrary.MediaType.audio):
@@ -45,8 +54,13 @@ export class Songs extends Component {
         <Screen>
           {this.context.audioFiles.map(item =>
             //<Text key={item.id}>{item.filename}</Text>
-            <Songitem title={item.filename} duration={item.duration} />
+            <Songitem title={item.filename} duration={item.duration}
+              onOptionpress={() => {
+                this.song = item;
+                this.setState({ ...this.state, optioncardvisibility: true });
+              }} />
           )}
+          <OptionCard onAddtopress={() => console.log('add to playlist pressed')} onPlaypress={() => console.log('play pressed')} selectedsong={this.song} onCLose={() => this.setState({ ...this.state, optioncardvisibility: false })} visible={this.state.optioncardvisibility} />
         </Screen>
       </ScrollView>
     );

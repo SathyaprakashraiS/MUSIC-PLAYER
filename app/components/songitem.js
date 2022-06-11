@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import color from '../misc/color';
 
 const thethumbnailletter = (songname) => songname[0]
-const Songitem = ({ title, duration }) => {
+const Songitem = ({ title, duration, onOptionpress }) => {
     return (
         <>
             <View style={styles.container}>
@@ -18,7 +18,7 @@ const Songitem = ({ title, duration }) => {
                     </View>
                 </View>
                 <View style={styles.rightcontainer}>
-                    <Entypo name="dots-three-vertical" size={24} color={color.FONT_MEDIUM} />
+                    <Entypo name="dots-three-vertical" size={24} color={color.FONT_MEDIUM} onPress={onOptionpress} />
                 </View>
             </View>
             <View style={styles.line}></View>
