@@ -12,7 +12,7 @@ const Songitem = ({ title, duration, onOptionpress }) => {
                     <View style={styles.thumbnail}>
                         <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
                     </View>
-                    <View style={StyleSheet.titlecontainer}>
+                    <View style={styles.titlecontainer}>
                         <Text numberOfLines={1} style={styles.title}>{title}</Text>
                         <Text numberOfLines={1} style={styles.duration}>{duration}</Text>
                     </View>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     rightcontainer: {
         flexBasis: 50,
         alignSelf: 'center',
-        //backgroundColor: 'green',
+        backgroundColor: 'green',
     },
     thumbnail: {
         height: 50,

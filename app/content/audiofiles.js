@@ -5,7 +5,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { Alert } from 'react-native-web';
 import { DataProvider } from 'recyclerlistview';
 
-export const AudioContext = createContext()
+export let AudioContext = createContext()
 export class AudioFiles extends Component {
     constructor(props) {
         super(props)
@@ -33,7 +33,7 @@ export class AudioFiles extends Component {
             mediaType: MediaLibrary.MediaType.audio,
             first: media.totalCount,
         });
-        this.setState({ ...this.state, dataProvider: dataProvider.cloneWithRows([...audioFiles, ...media.assets]), audioFiles: [...audioFiles, ...media.assets], });
+        this.setState({ ...this.state, dataProvider: dataProvider.cloneWithRows([...audioFiles, ...media.assets]), audioFiles: [...audioFiles, ...media.assets] });
         /*
         console.log(media);
         console.log(media.assets.length);

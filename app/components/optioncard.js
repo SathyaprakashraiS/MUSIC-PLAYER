@@ -3,14 +3,15 @@ import React from "react";
 import { View, StyleSheet, Modal, StatusBar, Text, TouchableWithoutFeedback } from 'react-native';
 import color from "../misc/color";
 
-const OptionCard = ({ visible, selectedsong, onClose, onPlaypress, onAddtopress }) => {
-    const { songname } = selectedsong;
+const OptionCard = ({ visible, onClose, onPlaypress, onAddtopress }) => {
+    //const { songname } = selectedsong;
+    console.log('the visibility', { visible })
     return (
         <>
             <StatusBar hidden />
             <Modal animationType='slide' transparent={true} visible={visible}>
                 <View style={styles.card}>
-                    <Text style={styles.trackname} numberOfLines={1}>{songname}</Text>
+                    <Text style={styles.trackname} numberOfLines={1}>test</Text>
                     <View style={styles.optioncard}>
                         <TouchableWithoutFeedback onPress={onPlaypress}>
                             <Text style={styles.choice}>play</Text>
