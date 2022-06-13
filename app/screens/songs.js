@@ -9,7 +9,7 @@ import Songitem from '../components/songitem';
 import Screen from '../components/screen';
 import OptionCard from '../components/optioncard';
 import color from '../misc/color';
-import Audio from 'expo-av';
+import { Audio } from 'expo-av';
 
 export class Songs extends Component {
   static contextType = AudioContext;
