@@ -1,25 +1,28 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import color from '../misc/color';
 
 const thethumbnailletter = (songname) => songname[0]
-const Songitem = ({ title, duration, onOptionpress }) => {
+const Songitem = ({ title, duration, onOptionpress, onSongpress }) => {
     return (
         <>
             <View style={styles.container}>
-                <View style={styles.leftcontainer}>
-                    <View style={styles.thumbnail}>
-                        <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
+                <TouchableOpacity style={styles.leftcontainer} onPress={onSongpress}>
+                    <View style={styles.leftcontainer}>
+                        <View style={styles.thumbnail}>
+                            <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
+                        </View>
+                        <View style={styles.titlecontainer}>
+                            <Text numberOfLines={1} style={styles.title}>{title}</Text>
+                            <Text numberOfLines={1} style={styles.duration}>{duration}</Text>
+                        </View>
                     </View>
-                    <View style={styles.titlecontainer}>
-                        <Text numberOfLines={1} style={styles.title}>{title}</Text>
-                        <Text numberOfLines={1} style={styles.duration}>{duration}</Text>
-                    </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.rightcontainer}>
                     <Entypo name="dots-three-vertical" size={24} color={color.FONT_MEDIUM} onPress={onOptionpress} />
                 </View>
+
             </View>
             <View style={styles.line}></View>
         </>
@@ -40,11 +43,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
+        //backgroundColor: 'blue',
     },
     rightcontainer: {
         flexBasis: 50,
         alignSelf: 'center',
-        backgroundColor: 'green',
+        //backgroundColor: 'green',
     },
     thumbnail: {
         height: 50,

@@ -9,6 +9,7 @@ import Songitem from '../components/songitem';
 import Screen from '../components/screen';
 import OptionCard from '../components/optioncard';
 import color from '../misc/color';
+import Audio from 'expo-av';
 
 export class Songs extends Component {
   static contextType = AudioContext;
@@ -18,6 +19,9 @@ export class Songs extends Component {
       optioncardvisibility: false,
       songname: '0',
       songduration: 0,
+      playbackobj: null,
+      soundobj: null,
+      currentsong: {}
     }
     //this.song = {}
   }
@@ -33,12 +37,38 @@ export class Songs extends Component {
         dim.height = 0;
     }
   });
+
   rowRenderer = (type, item) => {
     return <Songitem title={item.filename} duration={item.duration} onOptionpress={() => {
       console.log('pressed options')
       this.setState({ optioncardvisibility: true })
     }} />;
   };
+
+  Songpress = (audio) => {
+    console.log('songplay was pressed', audio)
+    const playbackobj = new Audio.Sound();
+    playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
+    /*
+    if (this.state.soundobj === null) {
+      //console.log('songplay was pressed', audio)
+      const playbackobj = new Audio.Sound();
+      const status = await 
+      //console.log(status)
+      return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio })
+    }
+    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying) {
+      //console.log('already loaded adn playing')
+      const status = await this.state.playbackobj.setStatusAsync({ shouldPlay: false });
+      return this.setState({ ...this.state, soundobj: status });
+    }
+    if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id === audio.id) {
+      const status = await this.state.playbackobj.PlayAsync()
+      return this.setState({ ...this.state, soundobj: status });
+    }
+    */
+  };
+
   render() {
     /*
     return (
@@ -77,7 +107,8 @@ export class Songs extends Component {
               this.setState({ optioncardvisibility: true });
               this.setState({ songname: item.filename });
               this.setState({ songduration: item.duration });
-            }} />
+            }}
+            onSongpress={() => this.Songpress(item)} />
         )}
         <OptionCard visible={this.state.optioncardvisibility}
           name={this.state.songname}
