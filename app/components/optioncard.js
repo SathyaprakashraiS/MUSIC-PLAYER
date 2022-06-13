@@ -1,37 +1,38 @@
 //import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { View, StyleSheet, Modal, StatusBar, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, Modal, StatusBar, Text, TouchableWithoutFeedback, Alert, TouchableOpacity } from 'react-native';
 import color from "../misc/color";
 
-const OptionCard = ({ visible, onClose, onPlaypress, onAddtopress }) => {
-    //const { songname } = selectedsong;
-    console.log('the visibility', { visible })
+const OptionCard = ({ visible, name, duration, onPlaypress, onAddtopress, onClosepress }) => {
+    //const { tname } = name;
+    //const { tduration } = duration;
+    //console.log('the name and duration is :', tname, tduration, name, duration)
     return (
-        <>
-            <StatusBar hidden />
-            <Modal animationType='slide' transparent={true} visible={visible}>
-                <View style={styles.card}>
-                    <Text style={styles.trackname} numberOfLines={1}>test</Text>
-                    <View style={styles.optioncard}>
-                        <TouchableWithoutFeedback onPress={onPlaypress}>
-                            <Text style={styles.choice}>play</Text>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={onAddtopress}>
-                            <Text style={styles.choice}>add to playlist</Text>
-                        </TouchableWithoutFeedback>
-                    </View>
+        <Modal animationType='slide' transparent={true} visible={visible} onRequestClose={onClosepress}>
+            <TouchableOpacity style={styles.container} onPress={onClosepress}>
+            </TouchableOpacity>
+            <View style={styles.card}>
+                <Text style={styles.trackname} numberOfLines={1}>{name}</Text>
+                <View style={styles.optioncard}>
+                    <TouchableWithoutFeedback onPress={onPlaypress}>
+                        <Text style={styles.choice}>Play</Text>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={onAddtopress}>
+                        <Text style={styles.choice}>Add to playlist</Text>
+                    </TouchableWithoutFeedback>
                 </View>
-                <TouchableWithoutFeedback onPress={onClose}>
-                    <View style={styles.cardcolor} />
-                </TouchableWithoutFeedback>
-            </Modal >
-        </>
+            </View>
+        </Modal >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-
+        flex: 1,
+        //backgroundColor: color.APP_BG,
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     card: {
         position: 'absolute',
@@ -67,6 +68,11 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: '0',
         backgroundColor: color.MODAL_BG,
+    },
+    closecard: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'yellow',
     },
 })
 

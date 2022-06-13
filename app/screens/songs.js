@@ -15,9 +15,11 @@ export class Songs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      optioncardvisibility: false
+      optioncardvisibility: false,
+      songname: '0',
+      songduration: 0,
     }
-    this.song = {}
+    //this.song = {}
   }
 
   layoutProvider = new LayoutProvider(i => MediaLibrary.MediaType.audio, (type, dim) => {
@@ -71,19 +73,18 @@ export class Songs extends Component {
           //<Text key={item.id}>{item.filename}</Text>
           <Songitem title={item.filename} duration={item.duration}
             onOptionpress={() => {
-              console.log('option pressed')
+              console.log('option pressed', item.filename, item.duration)
               this.setState({ optioncardvisibility: true });
+              this.setState({ songname: item.filename });
+              this.setState({ songduration: item.duration });
             }} />
         )}
-        <Modal animationType="slide" transparent={true} visible={this.state.optioncardvisibility} onRequestClose={() => { Alert.alert('closing card...'); this.setState({ optioncardvisibility: false }); }}>
-          <View style={styles.card}>
-            <Text style={styles.trackname} numberOfLines={1}>test</Text>
-            <View style={styles.optioncard}>
-              <Text style={styles.choice}>play</Text>
-              <Text style={styles.choice}>add to playlist</Text>
-            </View>
-          </View>
-        </Modal >
+        <OptionCard visible={this.state.optioncardvisibility}
+          name={this.state.songname}
+          duration={this.state.songduration}
+          onPlaypress={() => console.log('play pressed')}
+          onAddtopress={() => console.log('add to playlist pressed')}
+          onClosepress={() => this.setState({ optioncardvisibility: false })} />
       </ScrollView >
     );
 
