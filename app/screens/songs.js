@@ -21,7 +21,8 @@ export class Songs extends Component {
       songduration: 0,
       playbackobj: null,
       soundobj: null,
-      currentsong: {}
+      currentsong: {},
+      songplaying: true,
     }
     //this.song = {}
   }
@@ -53,24 +54,46 @@ export class Songs extends Component {
     */
     const playbackobj = new Audio.Sound();
     if (this.state.soundobj === null) {
+      console.log('1')
       //console.log('songplay was pressed', audio)
       //const playbackobj = new Audio.Sound();
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
       //console.log(status)
-      return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio })
+      return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
-    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying) {
+    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id === audio.id) {
+      console.log('2')
       //console.log('already loaded adn playing')
       //const status = await this.state.playbackobj.setStatusAsync({ shouldPlay: false });
       const status = await this.state.playbackobj.pauseAsync();
-      return this.setState({ ...this.state, soundobj: status });
+      return this.setState({ ...this.state, soundobj: status, songplaying: false });
     }
     if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id === audio.id) {
+      console.log('3')
       //console.log('trying to resume', this.state.soundobj)
       const status = await this.state.playbackobj.playAsync();
-      return this.setState({ ...this.state, soundobj: status, });
+      return this.setState({ ...this.state, soundobj: status, songplaying: true });
     }
+    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
+      console.log('4')
+      //console.log('songplay was pressed', audio)
+      //const playbackobj = new Audio.Sound();
 
+      this.state.playbackobj.pauseAsync();
+      this.state.playbackobj.unloadAsync();
+      const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
+      //console.log(status)
+      return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
+    }
+    if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
+      console.log('5')
+      //console.log('songplay was pressed', audio)
+      //const status = this.state.playbackobj.pauseAsync();
+      this.state.playbackobj.unloadAsync()
+      const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
+      //console.log(status)
+      return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
+    }
   };
 
   render() {
