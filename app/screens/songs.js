@@ -12,6 +12,7 @@ import color from '../misc/color';
 import { Audio } from 'expo-av';
 
 export class Songs extends Component {
+
   static contextType = AudioContext;
   constructor(props) {
     super(props);
@@ -23,8 +24,25 @@ export class Songs extends Component {
       soundobj: null,
       currentsong: {},
       songplaying: true,
+      comments: [],
+
     }
+    /*const comments = [
+      { reply: 'Reply 1' },
+    ];
+    state = {
+      comments: ["Corn", "Potato"],
+    };*/
     //this.song = {}
+  }
+
+
+  addSongtolist(audio) {
+    let { comments } = this.state;
+    comments.push(audio);
+    for (var i = 0; i < comments.length; i++) {
+      console.log(comments[i].uri)
+    }
   }
 
   layoutProvider = new LayoutProvider(i => MediaLibrary.MediaType.audio, (type, dim) => {
@@ -58,6 +76,8 @@ export class Songs extends Component {
       //console.log('songplay was pressed', audio)
       //const playbackobj = new Audio.Sound();
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
+
+      this.addSongtolist(audio)
       //console.log(status)
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
@@ -77,21 +97,25 @@ export class Songs extends Component {
     if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
       console.log('4')
       //console.log('songplay was pressed', audio)
-      //const playbackobj = new Audio.Sound();
-
-      this.state.playbackobj.pauseAsync();
+      this.state.playbackobj.stopAsync();
       this.state.playbackobj.unloadAsync();
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
-      //console.log(status)
+      this.addSongtolist(audio)
+      /*
+            const { comments } = this.state;
+            comments.unshift({ reply: audio });
+            console.log(comments);
+            this.setState({ comments: comments.slice(0) });
+      */
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
     if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
       console.log('5')
       //console.log('songplay was pressed', audio)
-      //const status = this.state.playbackobj.pauseAsync();
+      this.state.playbackobj.stopAsync();
       this.state.playbackobj.unloadAsync()
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
-      //console.log(status)
+      this.addSongtolist(audio)
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
   };
