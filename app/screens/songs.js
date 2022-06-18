@@ -25,7 +25,8 @@ export class Songs extends Component {
       currentsong: {},
       songplaying: true,
       comments: [],
-
+      wait: false,
+      paused: false,
     }
     /*const comments = [
       { reply: 'Reply 1' },
@@ -37,13 +38,36 @@ export class Songs extends Component {
   }
 
 
-  addSongtolist(audio) {
-    let { comments } = this.state;
-    comments.push(audio);
-    for (var i = 0; i < comments.length; i++) {
-      console.log(comments[i].uri)
+  addSongtolist(status) {
+    //console.log('delay started')
+    /*
+    for(var i=0;i<1000;i++)
+    {
+      
     }
+    this.setState({ ...this.state, wait: false })
+    */
+    setTimeout(fuction = () => {
+      this.setState({ ...this.state, wait: false })
+    }, 4000);
+    //console.log('delay ended')
+
+    /*
+        const infuncplaybackobj = new Audio.Sound();
+        let { comments } = this.state;
+        comments.push(status);
+        for (var i = 0; i < (comments.length - 1); i++) {
+          console.log(comments[i].uri, comments[i].shouldPlay)
+          if (comments[i].shouldPlay) {
+            infuncplaybackobj.loadAsync({ uri: comments[i].uri }, { shouldPlay: false });
+            infuncplaybackobj.stopAsync();
+            infuncplaybackobj.unloadAsync();
+          }*/
+    //const status = await infuncplaybackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
+    //infuncplaybackobj.loadAsync({ uri: comments[i].uri }, { shouldPlay: false });
   }
+
+
 
   layoutProvider = new LayoutProvider(i => MediaLibrary.MediaType.audio, (type, dim) => {
     switch (type) {
@@ -63,7 +87,16 @@ export class Songs extends Component {
       this.setState({ optioncardvisibility: true })
     }} />;
   };
-
+  testfunc = (item, sname) => {
+    if (this.state.wait) {
+      //console.log('test wait')
+    }
+    else {
+      this.setState({ songname: sname })
+      this.setState({ paused: true })
+      this.Songpress(item)
+    }
+  }
   Songpress = async audio => {
     /*
     console.log('songplay was pressed', audio)
@@ -71,36 +104,50 @@ export class Songs extends Component {
     playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
     */
     const playbackobj = new Audio.Sound();
-    if (this.state.soundobj === null) {
+    if (this.state.soundobj === null && !this.state.wait) {
       console.log('1')
       //console.log('songplay was pressed', audio)
       //const playbackobj = new Audio.Sound();
+      this.setState({ paused: false })
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
-
-      this.addSongtolist(audio)
-      //console.log(status)
+      this.setState({ ...this.state, wait: true })
+      this.addSongtolist(status)
+      console.log('timer @')
+      //setTimeout(this.setState({ ...this.state, wait: false }), 4000);
+      console.log(status)
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
     if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id === audio.id) {
       console.log('2')
       //console.log('already loaded adn playing')
       //const status = await this.state.playbackobj.setStatusAsync({ shouldPlay: false });
+      this.setState({ paused: false })
       const status = await this.state.playbackobj.pauseAsync();
       return this.setState({ ...this.state, soundobj: status, songplaying: false });
     }
     if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id === audio.id) {
       console.log('3')
       //console.log('trying to resume', this.state.soundobj)
+      this.setState({ paused: true })
       const status = await this.state.playbackobj.playAsync();
+      this.setState({ ...this.state, wait: true })
+      this.addSongtolist(status)
+      console.log('timer @')
+      //setTimeout(this.setState({ ...this.state, wait: false }), 4000);
+      //this.addSongtolist(audio)
       return this.setState({ ...this.state, soundobj: status, songplaying: true });
     }
-    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
+    if (this.state.soundobj.isLoaded && this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id && !this.state.wait) {
       console.log('4')
       //console.log('songplay was pressed', audio)
-      this.state.playbackobj.stopAsync();
-      this.state.playbackobj.unloadAsync();
+      playbackobj.stopAsync();
+      playbackobj.unloadAsync();
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
-      this.addSongtolist(audio)
+      this.setState({ ...this.state, wait: true })
+      this.addSongtolist(status)
+      console.log('timer @')
+      //setTimeout(this.setState({ ...this.state, wait: false }), 4000);
+      //this.addSongtolist(audio)
       /*
             const { comments } = this.state;
             comments.unshift({ reply: audio });
@@ -109,15 +156,20 @@ export class Songs extends Component {
       */
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
-    if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id) {
+    if (this.state.soundobj.isLoaded && !this.state.soundobj.isPlaying && this.state.currentsong.id !== audio.id && !this.state.wait) {
       console.log('5')
       //console.log('songplay was pressed', audio)
-      this.state.playbackobj.stopAsync();
-      this.state.playbackobj.unloadAsync()
+      playbackobj.stopAsync();
+      playbackobj.unloadAsync();
       const status = await playbackobj.loadAsync({ uri: audio.uri }, { shouldPlay: true });
-      this.addSongtolist(audio)
+      this.setState({ ...this.state, wait: true })
+      this.addSongtolist(status)
+      console.log('timer @')
+      //setTimeout(this.setState({ ...this.state, wait: false }), 4000);
+      //this.addSongtolist(audio)
       return this.setState({ ...this.state, playbackobj: playbackobj, soundobj: status, currentsong: audio, songplaying: true })
     }
+
   };
 
   render() {
@@ -145,21 +197,22 @@ export class Songs extends Component {
         }}
       </AudioContext.Consumer>
     );
-*/
+  */
 
 
     return (
       <ScrollView>
         {this.context.audioFiles.map(item =>
           //<Text key={item.id}>{item.filename}</Text>
-          <Songitem title={item.filename} duration={item.duration}
+          <Songitem title={item.filename} duration={item.duration} songname={this.state.songname} ispaused={this.state.paused}
             onOptionpress={() => {
               console.log('option pressed', item.filename, item.duration)
               this.setState({ optioncardvisibility: true });
               this.setState({ songname: item.filename });
               this.setState({ songduration: item.duration });
             }}
-            onSongpress={() => this.Songpress(item)} />
+            //onSongpress={() => this.Songpress(item)} />
+            onSongpress={() => this.testfunc(item, item.filename)} />
         )}
         <OptionCard visible={this.state.optioncardvisibility}
           name={this.state.songname}

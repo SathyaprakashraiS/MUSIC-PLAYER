@@ -1,17 +1,31 @@
 import React from 'react';
 import { View, StyleSheet, Text, Dimensions, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import color from '../misc/color';
-
 const thethumbnailletter = (songname) => songname[0]
-const Songitem = ({ title, duration, onOptionpress, onSongpress }) => {
+const Songitem = ({ title, duration, onOptionpress, onSongpress, songname, ispaused }) => {
+    console.log('this is from songitem', songname)
+    //<Ionicons name="play" size={24} color="black" />
     return (
         <>
             <View style={styles.container}>
                 <TouchableOpacity style={styles.leftcontainer} onPress={onSongpress}>
                     <View style={styles.leftcontainer}>
                         <View style={styles.thumbnail}>
-                            <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
+                            {
+                                songname === title && ispaused ?
+                                    <MaterialIcons name="pause" size={24} color="black" />
+                                    :
+                                    <>
+                                        {
+                                            songname === title && !ispaused ?
+                                                <Ionicons name="play" size={24} color="black" />
+                                                :
+                                                <Text style={styles.thumbnailtext}>{thethumbnailletter(title)}</Text>
+                                        }
+                                    </>
+
+                            }
                         </View>
                         <View style={styles.titlecontainer}>
                             <Text numberOfLines={1} style={styles.title}>{title}</Text>
