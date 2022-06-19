@@ -1,12 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import reactDom from 'react-dom';
+import Slider from '@react-native-community/slider';
+import color from '../misc/color';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
+const { width } = Dimensions.get('window')
 export default function Player() {
   return (
-    <View style={styles.container}>
-      <Text>PLAYER</Text>
+    <>
+
+      <View style={styles.container}>
+        <View style={styles.icon}>
+          <View style={styles.theicon}>
+            <Ionicons name="musical-notes-sharp" size={136} color="black" />
+          </View>
+        </View>
+      </View>
+      <View style={styles.thewhole}>
+        <View style={styles.tsli}>
+          <Text numberOfLines={1} style={styles.songname}>SONG NAME</Text>
+          <Text></Text>
+          <View style={styles.sliderbar}>
+            <Slider
+              style={{ width: width, height: 40 }}
+              minimumValue={0}
+              maximumValue={1}
+              minimumTrackTintColor='#00D1FF'
+              maximumTrackTintColor='#000000'>
+            </Slider>
+          </View>
+        </View>
+      </View>
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
 
@@ -16,5 +44,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  icon: {
+    //backgroundColor: '#FF0000',
+    backgroundColor: color.MODAL_BG,
+    borderRadius: 150,
+    width: width / 1.5,
+    height: width / 1.5,
+  },
+  theicon: {
+    padding: 65,
+  },
+  sliderbar: {
+    //backgroundColor: 'green',
+    backgroundColor: '#fff',
+    marginBottom: 25,
+  },
+  tsli: {
+    marginBottom: 25,
+    backgroundColor: '#fff',
+  },
+  songname: {
+    //backgroundColor: 'purple',
+    backgroundColor: '#fff',
+    paddingLeft: 20,
+    fontSize: 20,
+    color: '#000000',
+  },
+  thewhole: {
+    backgroundColor: '#fff',
   },
 });
