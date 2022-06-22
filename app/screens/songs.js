@@ -18,7 +18,7 @@ export class Songs extends Component {
     super(props);
     this.state = {
       optioncardvisibility: false,
-      songname: '0',
+      songname: null,
       songduration: 0,
       playbackobj: null,
       soundobj: null,

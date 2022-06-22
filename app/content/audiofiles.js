@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { Alert } from 'react-native-web';
 import { DataProvider } from 'recyclerlistview';
+import { throwIfAudioIsDisabled } from 'expo-av/build/Audio/AudioAvailability';
 
 export let AudioContext = createContext()
 export class AudioFiles extends Component {
@@ -11,9 +12,18 @@ export class AudioFiles extends Component {
         super(props)
         this.state = {
             audioFiles: [],
-            dataProvider: new DataProvider((r1, r2) => r1 !== r2)
-
-        }
+            dataProvider: new DataProvider((r1, r2) => r1 !== r2),
+            songname: null,
+            songduration: 0,
+            playbackobj: null,
+            soundobj: null,
+            currentsong: {},
+            songplaying: true,
+            comments: [],
+            wait: false,
+            paused: false,
+        };
+        this.totalsongs = 0;
     }
 
     permissionAllert = () => {
@@ -33,6 +43,7 @@ export class AudioFiles extends Component {
             mediaType: MediaLibrary.MediaType.audio,
             first: media.totalCount,
         });
+        this.totalsongs = media.totalCount;
         this.setState({ ...this.state, dataProvider: dataProvider.cloneWithRows([...audioFiles, ...media.assets]), audioFiles: [...audioFiles, ...media.assets] });
         /*
         console.log(media);
@@ -70,7 +81,7 @@ export class AudioFiles extends Component {
     render() {
         const { audioFiles, dataProvider } = this.state
         return (
-            <AudioContext.Provider value={{ audioFiles, dataProvider }}>
+            <AudioContext.Provider value={{ audioFiles, dataProvider, totalsongs: this.totalsongs }}>
                 {this.props.children}
             </AudioContext.Provider>
         );

@@ -5,13 +5,23 @@ import reactDom from 'react-dom';
 import Slider from '@react-native-community/slider';
 import color from '../misc/color';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import { AudioContext } from '../content/audiofiles';
+import { useContext } from 'react';
 
 const { width } = Dimensions.get('window')
-export default function Player() {
+const Player = () => {
+  //}
+  //export default function Player() {
+  const context = useContext(AudioContext);
   return (
     <>
-
+      <View style={styles.alcontainer}>
+        <View style={styles.counter}>
+          <Text>1/{context.totalsongs}</Text>
+        </View>
+      </View>
       <View style={styles.container}>
+
         <View style={styles.icon}>
           <View style={styles.theicon}>
             <Ionicons name="musical-notes-sharp" size={136} color="black" />
@@ -74,4 +84,19 @@ const styles = StyleSheet.create({
   thewhole: {
     backgroundColor: '#fff',
   },
+  counter: {
+    //marginLeft: width - 60,
+    alignItems: 'flex-end',
+    paddingRight: 10,
+    //backgroundColor: 'yellow',
+    fontSize: 45,
+  },
+  alcontainer: {
+    //flex: 1,
+    backgroundColor: '#fff',
+    width: width,
+    //alignItems: 'center',
+    //justifyContent: 'center',
+  },
 });
+export default Player;
